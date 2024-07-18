@@ -56,11 +56,9 @@ namespace Business
             {
                 throw new KeyNotFoundException("The move could not be found");
             }
-            int attack;
-            int defense;
             (int, int) result = GetRealAttackDefenseStats(move, damaging, target, informations);
-            attack = result.Item1;
-            defense = result.Item2;
+            int attack = attack = result.Item1;
+            int defense = defense = result.Item2;
             float STAB = GetSTAB(damaging, move);
             int critical = informations.IsCritical ? 2 : 1;
             float typeEffi = await GetTypeEfficiency(move, target);
@@ -100,19 +98,15 @@ namespace Business
 
                 case "Spe":
                     attack = EffectiveStat(
-                        damaging.SP_Attack,
-                        informations.DamagingEvs.SP_Attack,
-                        informations.DamagingIvs.SP_Attack,
+                        damaging.Special,
+                        informations.DamagingEvs.Special,
+                        informations.DamagingIvs.Special,
                         informations.DamagingLevel,
                         false
                     );
-                    defense = EffectiveStat(
-                        target.SP_Defense,
-                        informations.TargetEvs.SP_Defense,
-                        informations.TargetIvs.SP_Defense,
-                        informations.TagetLevel,
-                        false
-                    );
+                    // We can do that since in gen1,
+                    // they are the same stat.
+                    defense = attack;
                     break;
 
                 default:
