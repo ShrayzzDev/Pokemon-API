@@ -1,15 +1,16 @@
-﻿using Entities;
+﻿using Entities.Pokemons;
 using EntityExtensions;
-using Model;
+using EntityExtensions.Pokemons;
+using Model.Pokemons;
 using Services;
 
 namespace Business
 {
-    public class PokemonBusinessServices : IPokemonService<Pokemon>
+    public class PokemonBusinessServices : IPokemonService<Pokemon, PokemonWithoutMoves, SimplePokemon>
     {
-        private readonly IPokemonService<PokemonEntity> _repository;
+        private readonly IPokemonService<PokemonEntity, PokemonWithoutMovesEntity, SimplePokemonEntity> _repository;
 
-        public PokemonBusinessServices(IPokemonService<PokemonEntity> repository)
+        public PokemonBusinessServices(IPokemonService<PokemonEntity, PokemonWithoutMovesEntity, SimplePokemonEntity> repository)
         {
             _repository = repository;
         }
@@ -17,7 +18,7 @@ namespace Business
         public async Task<Pokemon?> GetPokemonById(int id)
             => (await _repository.GetPokemonById(id))?.ToModel();
 
-        public async Task<IEnumerable<Pokemon>> GetPokemonByName(string name, int index, int count)
+        public async Task<IEnumerable<SimplePokemon>> GetPokemonByName(string name, int index, int count)
             => (await _repository.GetPokemonByName(name, index, count)).ToModels();
     }
 }
