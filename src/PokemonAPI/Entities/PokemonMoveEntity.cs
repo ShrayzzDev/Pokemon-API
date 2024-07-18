@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities.Pokemons;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    [PrimaryKey(nameof(LearningId), nameof(LearnedMoveId))]
+    [PrimaryKey(nameof(LearningId), nameof(LearnedMoveId), nameof(Generation))]
     public class PokemonMoveEntity
     {
         public int LearningId { get; set; }
@@ -21,13 +22,16 @@ namespace Entities
 
         public int LearningLevel { get; set; }
 
+        public int Generation { get; set; }
+
         public PokemonMoveEntity() { }
 
-        public PokemonMoveEntity(int learningId, int moveId, int learningLevel)
+        public PokemonMoveEntity(int learningId, int moveId, int learningLevel, int gen)
         {
             LearningId = learningId;
             LearnedMoveId = moveId;
             LearningLevel = learningLevel;
+            Generation = gen;
         }
     }
 }

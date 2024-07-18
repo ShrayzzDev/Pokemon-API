@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities.Pokemons;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,8 @@ namespace Entities
         public string Name { get; set; } = null!;
 
         public string Typing { get; set; } = null!;
+
+        public ICollection<PokemonWithoutMovesEntity> Pokemons { get; set; } = new List<PokemonWithoutMovesEntity>();
 
         public TypeEntity() { }
 
