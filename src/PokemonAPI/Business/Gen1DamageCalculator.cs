@@ -64,9 +64,9 @@ namespace Business
             int critical = informations.IsCritical ? 2 : 1;
             float typeEffi = await GetTypeEfficiency(move, target);
             float random = new Random().Next(217, 255) / 255f;
-            return (((((2 * informations.DamagingLevel * critical / 5) + 2)
-                * move.Power * attack / defense) + 2)
-                / 50) * STAB * typeEffi * random;
+            return ((((2 * informations.DamagingLevel * critical / 5) + 2)
+                * move.Power * attack / defense
+                / 50) + 2) * STAB * typeEffi * random;
         }
 
         protected (int, int) GetRealAttackDefenseStats(Move move, Pokemon damaging, Pokemon target, Gen1DamageInformations informations)
@@ -77,14 +77,14 @@ namespace Business
             {
                 case "Phy":
                     attack = EffectiveStat(
-                    damaging.Attack,
-                    informations.DamagingEvs.Attack,
-                    informations.DamagingIvs.Attack,
-                    informations.DamagingLevel,
+                        damaging.Attack,
+                        informations.DamagingEvs.Attack,
+                        informations.DamagingIvs.Attack,
+                        informations.DamagingLevel,
                         false
                     );
                     defense = EffectiveStat(
-                    target.Defense,
+                        target.Defense,
                         informations.TargetEvs.Defense,
                         informations.TargetIvs.Defense,
                         informations.TagetLevel,
@@ -94,14 +94,14 @@ namespace Business
 
                 case "Spe":
                     attack = EffectiveStat(
-                    damaging.SP_Attack,
+                        damaging.SP_Attack,
                         informations.DamagingEvs.SP_Attack,
                         informations.DamagingIvs.SP_Attack,
                         informations.DamagingLevel,
                         false
                     );
                     defense = EffectiveStat(
-                    target.SP_Defense,
+                        target.SP_Defense,
                         informations.TargetEvs.SP_Defense,
                         informations.TargetIvs.SP_Defense,
                         informations.TagetLevel,
