@@ -1,4 +1,6 @@
-﻿using Entities;
+﻿using Context;
+using Entities.Pokemons;
+using Microsoft.EntityFrameworkCore;
 using Parser;
 using System;
 using System.Collections.Generic;
@@ -32,34 +34,43 @@ namespace InitDatabase
                 95,48,65,110,110,110,75,90,115,45,
                 70,60,65,125,125,125,80,70,100,154,100];
 
-        public static IEnumerable<PokemonEntity> GetPokemonArray()
+        public async static Task<IEnumerable<PokemonEntity>> GetPokemonArray(PokemonDBContext context)
         {
-            var list = new List<PokemonEntity>();
-            CSVParser _pkmnParser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/pokemon.csv");
-            CSVParser _statParser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/pokemon_stats.csv");
+            var pkmnParser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/pokemon.csv");
+            var typeParser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/pokemon_types.csv");
+            var statParser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/pokemon_stats.csv");
+            var list = new List<PokemonEntity>(pkmnParser.GetNumberOfLines());
+            var typeDict = InitTypes.GetTypesDict();
             int special;
-            for (int i = 1; i < _pkmnParser.GetNumberOfLines(); ++i)
+            string pokId;
+            int i;
+            int j = 1;
+            for (i = 1; i < pkmnParser.GetNumberOfLines(); ++i)
             {
-                if (i <= 150)
-                {
-                    special = _specialArray[i];
-                }
-                else
-                {
-                    special = 0;
-                }
-                int bstIndex = _statParser.GetFirstIndexWhere("pokemon_id", _pkmnParser.GetDataFromColumn("id", i));
-                list.Add(new PokemonEntity(
-                    int.Parse(_pkmnParser.GetDataFromColumn("id", i)),
-                    _pkmnParser.GetDataFromColumn("identifier", i),
-                    int.Parse(_statParser.GetDataFromColumn("base_stat", bstIndex)),
-                    int.Parse(_statParser.GetDataFromColumn("base_stat", bstIndex + 1)),
-                    int.Parse(_statParser.GetDataFromColumn("base_stat", bstIndex + 2)),
-                    int.Parse(_statParser.GetDataFromColumn("base_stat", bstIndex + 3)),
-                    int.Parse(_statParser.GetDataFromColumn("base_stat", bstIndex + 4)),
+                pokId = pkmnParser.GetDataFromColumn("id", i);
+                special = i <= 150 ? _specialArray[i] : 0;
+                int bstIndex = statParser.GetFirstIndexWhere("pokemon_id", pokId);
+                var pkmn = new PokemonEntity(
+                    int.Parse(pokId),
+                    pkmnParser.GetDataFromColumn("identifier", i),
+                    int.Parse(statParser.GetDataFromColumn("base_stat", bstIndex)),
+                    int.Parse(statParser.GetDataFromColumn("base_stat", bstIndex + 1)),
+                    int.Parse(statParser.GetDataFromColumn("base_stat", bstIndex + 2)),
+                    int.Parse(statParser.GetDataFromColumn("base_stat", bstIndex + 3)),
+                    int.Parse(statParser.GetDataFromColumn("base_stat", bstIndex + 4)),
                     special,
-                    int.Parse(_statParser.GetDataFromColumn("base_stat", bstIndex + 5))
-                ));
+                    int.Parse(statParser.GetDataFromColumn("base_stat", bstIndex + 5))
+                );
+                string typeName;
+                while (typeParser.GetDataFromColumn("pokemon_id",j) == pokId)
+                {
+                    typeName = typeDict[int.Parse(typeParser.GetDataFromColumn("type_id", j)) - 1].Name;
+                    pkmn.Types.Add(
+                        context.Types.Where(t => t.Name.Equals(typeName)).First()
+                    );
+                    ++j;
+                }
+                list.Add(pkmn);
             }
             return list;
         }
