@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Model
+namespace Model.Pokemons
 {
-    public class Pokemon
+    public class PokemonWithoutMoves : SimplePokemon
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
 
         public int HP { get; set; }
 
@@ -24,22 +25,19 @@ namespace Model
 
         public IEnumerable<Type> Types { get; set; }
 
-        public IEnumerable<PokemonMove> MovePool { get; set; }
-
-        public Pokemon(int id,
-                       string name, 
-                       int hP, 
+        public PokemonWithoutMoves(int id,
+                       string name,
+                       int hP,
                        int attack,
-                       int defense, 
+                       int defense,
                        int sP_Attack,
                        int sP_Defense,
-                       int special, 
-                       int speed, 
-                       IEnumerable<Type> types,
-                       IEnumerable<PokemonMove> movePool)
+                       int special,
+                       int speed,
+                       IEnumerable<Type> types)
+            : base(id, name)
         {
-            Id = id;
-            Name = name;
+
             HP = hP;
             Attack = attack;
             Defense = defense;
@@ -52,7 +50,6 @@ namespace Model
                 throw new ArgumentException($"Pokemon can't have more than 2 types. (name: {name})");
             }
             Types = types;
-            MovePool = movePool;
         }
     }
 }
