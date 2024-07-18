@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using Context;
+using Entities;
 using Parser;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,48 @@ namespace InitDatabase
 {
     public static class InitPokemonMove
     {
-        public static IEnumerable<PokemonMoveEntity> GetPokemonMoveArray()
+        /// <summary>
+        /// Gives a dictionnary giving each generation_id
+        /// its generation number
+        /// </summary>
+        /// <returns>The dict.</returns>
+        private static Dictionary<int, int> GetGenerationDictionnary()
         {
-            var list = new List<PokemonMoveEntity>();
-            CSVParser _parser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/pokemon_moves.csv");
-            for (int i = 1; i < _parser.GetNumberOfLines(); ++i)
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            CSVParser parser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/version_groups.csv");
+            for (int i = 1; i < parser.GetNumberOfLines(); ++i)
             {
-                if (int.Parse(_parser.GetDataFromColumn("pokemon_id", i)) > 151)
-                {
-                    break;
-                }
-                if (int.Parse(_parser.GetDataFromColumn("version_group_id", i)) > 2)
-                {
-                    continue;
-                }
+                dict.Add(
+                    int.Parse(parser.GetDataFromColumn("id", i)),
+                    int.Parse(parser.GetDataFromColumn("generation_id", i))
+                );
+            }
+            return dict;
+        }
+
+        public async static Task<IEnumerable<PokemonMoveEntity>> GetPokemonMoveArray(PokemonDBContext context)
+        {
+            CSVParser parser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/pokemon_moves.csv");
+            var verDict = GetGenerationDictionnary();
+            var list = new List<PokemonMoveEntity>(parser.GetNumberOfLines());
+            var movArr = InitMoves.GetMovesArray();
+            var pokArr = await InitPokemon.GetPokemonArray(context);
+            int pokId;
+            int movId;
+            for (int i = 1; i < parser.GetNumberOfLines(); ++i)
+            {
+                pokId = int.Parse(parser.GetDataFromColumn("pokemon_id", i));
+                movId = int.Parse(parser.GetDataFromColumn("move_id", i));
                 if (!list.Exists(pm => 
-                    pm.LearningId == int.Parse(_parser.GetDataFromColumn("pokemon_id", i))
-                 && pm.LearnedMoveId == int.Parse(_parser.GetDataFromColumn("move_id", i))
+                    pm.LearningId == pokId
+                 && pm.LearnedMoveId == movId
                 ))
                 {
                     list.Add(new PokemonMoveEntity(
-                        int.Parse(_parser.GetDataFromColumn("pokemon_id", i)),
-                        int.Parse(_parser.GetDataFromColumn("move_id", i)),
-                        int.Parse(_parser.GetDataFromColumn("level", i))
+                        pokId,
+                        movId,
+                        int.Parse(parser.GetDataFromColumn("level", i)),
+                        verDict[int.Parse(parser.GetDataFromColumn("version_group_id",i))]
                     ));
                 }
             }
