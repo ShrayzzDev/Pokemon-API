@@ -1,10 +1,13 @@
-﻿namespace DTO
-{
-    public class PokemonDTO
-    {
-        public int Id { get; set; }
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-        public string Name { get; set; }
+namespace DTO.Pokemons
+{
+    public class PokemonWithoutMovesDTO : SimplePokemonDTO
+    {
 
         public int HP { get; set; }
 
@@ -22,22 +25,18 @@
 
         public IEnumerable<TypeDTO> Types { get; set; }
 
-        public IEnumerable<PokemonMoveDTO> MovePool { get; set; }
-        
-        public PokemonDTO(int id, 
-                          string? name,
-                          int hP, 
+        public PokemonWithoutMovesDTO(int id,
+                          string name,
+                          int hP,
                           int attack,
                           int defense,
                           int sP_Attack,
                           int sP_Defense,
                           int special,
-                          int speed, 
-                          IEnumerable<TypeDTO> types,
-                          IEnumerable<PokemonMoveDTO> movePool)
+                          int speed,
+                          IEnumerable<TypeDTO> types)
+            : base(id, name)
         {
-            Id = id;
-            Name = name == null ? "" : name;
             HP = hP;
             Attack = attack;
             Defense = defense;
@@ -46,7 +45,7 @@
             Special = special;
             Speed = speed;
             Types = types;
-            MovePool = movePool;
         }
+
     }
 }
