@@ -1,11 +1,12 @@
 ﻿using Context;
-using Entities;
+using Entities.Pokemons;
+using EntityExtensions.Pokemons;
 using Microsoft.EntityFrameworkCore;
 using Services;
 
 namespace Repositories
 {
-    public class PokemonRepository : IPokemonService<PokemonEntity>
+    public class PokemonRepository : IPokemonService<PokemonEntity, PokemonWithoutMovesEntity, SimplePokemonEntity>
     {
         private PokemonDBContext Context;
 
@@ -14,6 +15,7 @@ namespace Repositories
             Context = context;
         }
 
+        /// <inheritdoc/>
         public async Task<PokemonEntity?> GetPokemonById(int id)
         {
             return await Context.Pokemons
@@ -25,13 +27,11 @@ namespace Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<PokemonEntity>> GetPokemonByName(string name, int index, int count)
+        /// <inheritdoc/>
+        public async Task<IEnumerable<SimplePokemonEntity>> GetPokemonByName(string name, int index, int count)
         {
-            return await Context.Pokemons
+            return await Context.SimplePokemons
                 .Where(p => p.Name.Contains(name))
-                .Include(p => p.MovePool)
-                .ThenInclude(m => m.LearnedMove.Type)
-                .Include(p => p.Types)
                 .Skip(index * count)
                 .Take(count).ToListAsync();
         }
