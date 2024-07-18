@@ -17,8 +17,8 @@ namespace Services
         /// Calculate damages
         /// </summary>
         /// <param name="informations">Parameters used for calculation</param>
-        /// <returns>The damage value</returns>
-        public Task<double> GetDamage(T informations);
+        /// <returns>A tuple of double, first is the minimum roll second is the max roll</returns>
+        public Task<(double,double)> GetDamage(T informations);
 
         /// <summary>
         /// Calculate the concrete stat value used

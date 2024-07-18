@@ -7,6 +7,7 @@ using Model;
 using Model.DamageParameters;
 using Model.Pokemons;
 using Services;
+using System;
 
 namespace Business
 {
@@ -42,7 +43,7 @@ namespace Business
 
         /// <inheritdoc/>
         /// Function is very long, should get seperated a bit.
-        public async Task<double> GetDamage(Gen1DamageInformations informations)
+        public async Task<(double, double)> GetDamage(Gen1DamageInformations informations)
         {
             var damaging = (await _pkmnRepository.GetPokemonById(informations.DamagingId))?.ToModel();
             var target = (await _pkmnRepository.GetPokemonById(informations.TargetId))?.ToModel();
@@ -63,10 +64,15 @@ namespace Business
             float STAB = GetSTAB(damaging, move);
             int critical = informations.IsCritical ? 2 : 1;
             float typeEffi = await GetTypeEfficiency(move, target);
-            float random = new Random().Next(217, 255) / 255f;
-            return ((((2 * informations.DamagingLevel * critical / 5) + 2)
+            float max = 1f;
+            float min = 217f / 255f;
+            float maxResult = ((((2 * informations.DamagingLevel * critical / 5) + 2)
                 * move.Power * attack / defense
-                / 50) + 2) * STAB * typeEffi * random;
+                / 50) + 2) * STAB * typeEffi * max;
+            float minResult = ((((2 * informations.DamagingLevel * critical / 5) + 2)
+                * move.Power * attack / defense
+                / 50) + 2) * STAB * typeEffi * min;
+            return (minResult, maxResult);
         }
 
         protected (int, int) GetRealAttackDefenseStats(Move move, Pokemon damaging, Pokemon target, Gen1DamageInformations informations)
