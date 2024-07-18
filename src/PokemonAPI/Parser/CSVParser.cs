@@ -58,12 +58,14 @@
         /// Get the data from the name of the column
         /// NOTE : This is 1-index (0 is the column names)
         /// </summary>
-        /// <param name="columnName"></param>
-        /// <param name="lineNumber"></param>
-        /// <returns></returns>
+        /// <param name="columnName">Column</param>
+        /// <param name="lineNumber">Line</param>
+        /// <returns>The value, emtpy string if out of bounds.</returns>
         public string GetDataFromColumn(string columnName, int lineNumber)
         {
-            return _data.ElementAt(lineNumber)[_columnPositions[columnName]];
+            if (_data.Count() > lineNumber || ! _columnPositions.Keys.Contains(columnName))
+                return _data.ElementAt(lineNumber)[_columnPositions[columnName]];
+            return "";
         }
 
         /// <summary>
