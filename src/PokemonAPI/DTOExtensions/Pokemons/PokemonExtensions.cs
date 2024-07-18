@@ -1,7 +1,7 @@
-﻿using DTO;
-using Model;
+﻿using DTO.Pokemons;
+using Model.Pokemons;
 
-namespace DTOExtensions
+namespace DTOExtensions.Pokemons
 {
     public static class PokemonExtensions
     {
@@ -20,6 +20,16 @@ namespace DTOExtensions
                 model.Types.ToDTOs(),
                 model.MovePool.ToDTOs()
             );
+        }
+
+        public static IEnumerable<PokemonDTO> ToDTOs(this IEnumerable<Pokemon> models)
+        {
+            var list = new List<PokemonDTO>();
+            foreach (var model in models)
+            {
+                list.Add(model.ToDTO());
+            }
+            return list;
         }
     }
 }
