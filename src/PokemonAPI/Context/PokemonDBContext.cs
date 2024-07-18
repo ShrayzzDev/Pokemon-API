@@ -1,12 +1,13 @@
 ﻿using Entities;
-using InitDatabase;
+using Entities.Pokemons;
+using EntityExtensions.Pokemons;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace Context
 {
     public class PokemonDBContext : DbContext
     {
-
         public DbSet<TypeEntity> Types { get; set; }
 
         public DbSet<MoveEntity> Moves { get; set; }
@@ -15,10 +16,16 @@ namespace Context
 
         public DbSet<PokemonEntity> Pokemons { get; set; }
 
+        public DbSet<PokemonWithoutMovesEntity> PokemonsWithoutMoves { get; set; }
+
+        public DbSet<TypeEfficiencyEntity> TypeEfficiencies { get; set; }
+
+        public DbSet<SimplePokemonEntity> SimplePokemons { get; set; }
+
         public PokemonDBContext() { }
 
         public PokemonDBContext(DbContextOptions<PokemonDBContext> options) : base(options) { }
-
+        
         /// <inheritdoc/>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
