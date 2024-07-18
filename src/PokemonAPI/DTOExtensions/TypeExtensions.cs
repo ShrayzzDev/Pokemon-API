@@ -14,7 +14,7 @@ namespace DTOExtensions
 
         public static IEnumerable<TypeDTO> ToDTOs(this IEnumerable<Model.Type> models)
         {
-            var list = new List<TypeDTO>();
+            var list = new List<TypeDTO>(models.Count());
             foreach (var model in models)
             {
                 list.Add(model.ToDTO());

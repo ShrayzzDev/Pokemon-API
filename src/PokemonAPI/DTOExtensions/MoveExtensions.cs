@@ -21,5 +21,15 @@ namespace DTOExtensions
                 model.Accuracy
             );
         }
+
+        public static IEnumerable<MoveDTO> ToDTOs(this IEnumerable<Move> models)
+        {
+            var dtos = new List<MoveDTO>(models.Count());
+            foreach (var model in models)
+            {
+                dtos.Add(model.ToDTO());
+            }
+            return dtos;
+        }
     }
 }

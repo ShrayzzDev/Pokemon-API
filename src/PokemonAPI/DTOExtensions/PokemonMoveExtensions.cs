@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DTOExtensions
 {
-    public static class PokemoveMoveExtensions
+    public static class PokemonMoveExtensions
     {
         public static PokemonMoveDTO ToDTO(this PokemonMove move)
         {
@@ -21,7 +21,7 @@ namespace DTOExtensions
 
         public static IEnumerable<PokemonMoveDTO> ToDTOs(this IEnumerable<PokemonMove> models)
         {
-            var list = new List<PokemonMoveDTO>();
+            var list = new List<PokemonMoveDTO>(models.Count());
             foreach(var model in models)
             {
                 list.Add(model.ToDTO());
