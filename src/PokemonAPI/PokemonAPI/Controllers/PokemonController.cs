@@ -47,7 +47,7 @@ namespace PokemonAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"{DateTime.Now} | Unexpected exception catched when requesting pokemon n°{id}: {ex.Message}");
-                return Problem("An unexpected exception was catched. Please send a ticket on the GitHub repository with the (rough) time this request was made.");
+                return Problem("An unexpected exception was catched. \nPlease send a ticket on the GitHub repository with the (rough) time this request was made. \n If you ran this yourself, please include logs.");
             }
 
             if (pokemon == null)
@@ -73,7 +73,7 @@ namespace PokemonAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"{DateTime.Now} | Unexpected exception catched when requesting pokemon {name}: {ex.Message}");
-                return Problem("An unexpected exception was catched. Please send a ticket on the GitHub repository with the (rough) time this request was made.");
+                return Problem("An unexpected exception was catched. \nPlease send a ticket on the GitHub repository with the (rough) time this request was made. \n If you ran this yourself, please include logs.");
             }
 
             if (pokemons == null)
@@ -104,7 +104,7 @@ namespace PokemonAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"{DateTime.Now} | Unexpected exception catched when requesting the movepool of pokemon n°{id} at level {level}: {ex.Message}");
-                return Problem("An unexpected exception was catched. Please send a ticket on the GitHub repository with the (rough) time this request was made.");
+                return Problem("An unexpected exception was catched. \nPlease send a ticket on the GitHub repository with the (rough) time this request was made. \n If you ran this yourself, please include logs.");
             }
 
             if (moves.Count() == 0)

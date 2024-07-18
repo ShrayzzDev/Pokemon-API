@@ -24,23 +24,19 @@ namespace PokemonAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CalculateDamage([FromBody] Gen1DamageInformationsDTO parameters)
         {
-            DateTime start;
-            start = DateTime.Now;
             _logger.LogInformation($"{DateTime.Now} | An user is trying to calculate damages");
             double damageValue;
             try
             {
                 damageValue = await _damageCalculator.GetDamage(parameters.ToModel());
-                Console.WriteLine(DateTime.Now - start);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"{DateTime.Now} | Unexpected exception catched when calculatating damages: {ex.Message}");
-                return Problem("An unexpected exception was catched. Please send a ticket on the GitHub repository with the (rough) time this request was made.");
+                return Problem("An unexpected exception was catched. \nPlease send a ticket on the GitHub repository with the (rough) time this request was made. \n If you ran this yourself, please include logs.");
             }
             _logger.LogInformation($"{DateTime.Now} | Damage calculated successfully !");
             damageValue = damageValue < 1 ? 1 : (int)damageValue;
-            Console.WriteLine(DateTime.Now - start);
             return Ok(damageValue);
         }
     }
