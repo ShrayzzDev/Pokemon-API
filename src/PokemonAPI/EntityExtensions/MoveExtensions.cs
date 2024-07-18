@@ -24,7 +24,7 @@ namespace EntityExtensions
 
         public static IEnumerable<Move> ToModels(this IEnumerable<MoveEntity> entities)
         {
-            var list = new List<Move>();
+            var list = new List<Move>(entities.Count());
             foreach(var entity in entities)
             {
                 list.Add(entity.ToModel());

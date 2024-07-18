@@ -14,7 +14,7 @@ namespace EntityExtensions
 
         public static IEnumerable<Model.Type> ToModels(this IEnumerable<TypeEntity> entities)
         {
-            var list = new List<Model.Type>();
+            var list = new List<Model.Type>(entities.Count());
             foreach(var entity in entities)
             {
                 list.Add(entity.ToModel());

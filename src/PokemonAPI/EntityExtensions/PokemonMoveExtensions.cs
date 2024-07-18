@@ -12,7 +12,6 @@ namespace EntityExtensions
     {
         public static PokemonMove ToModel(this PokemonMoveEntity entity)
         {
-            Console.WriteLine(entity.LearnedMove.Id);
             return new PokemonMove(
                 entity.Learning.Id,
                 entity.LearnedMove.ToModel(),
@@ -20,10 +19,10 @@ namespace EntityExtensions
             );
         }
 
-        public static IEnumerable<PokemonMove> ToModel(this IEnumerable<PokemonMoveEntity> models)
+        public static IEnumerable<PokemonMove> ToModels(this IEnumerable<PokemonMoveEntity> entities)
         {
-            var list = new List<PokemonMove>();
-            foreach (var model in models)
+            var list = new List<PokemonMove>(entities.Count());
+            foreach (var model in entities)
             {
                 list.Add(model.ToModel());
             }
