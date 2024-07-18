@@ -12,27 +12,19 @@ namespace InitDatabase
     {
         public static IEnumerable<MoveEntity> GetMovesArray()
         {
-            var list = new List<MoveEntity>();
-            CSVParser _parser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/moves.csv");
-            IEnumerable<string> types = InitTypes.GetTypesArray().Select(type => type.Name);
-            for (int i = 1; i < _parser.GetNumberOfLines(); ++i)
+            CSVParser parser = new CSVParser($"{Directory.GetCurrentDirectory()}/data/moves.csv");
+            var list = new List<MoveEntity>(parser.GetNumberOfLines());
+            var types = InitTypes.GetTypesDict();
+            for (int i = 1; i < parser.GetNumberOfLines(); ++i)
             {
-                if (_parser.GetDataFromColumn("generation_id", i) != "1")
-                {
-                    continue;
-                }
-                int id = 0;
-                int power = 0;
-                int pp = 0;
-                int accuracy = 0;
-                int.TryParse(_parser.GetDataFromColumn("id", i), out id);
-                int.TryParse(_parser.GetDataFromColumn("power", i), out power);
-                int.TryParse(_parser.GetDataFromColumn("pp", i), out pp);
-                int.TryParse(_parser.GetDataFromColumn("accuracy", i), out accuracy);
+                int.TryParse(parser.GetDataFromColumn("id", i), out int id);
+                int.TryParse(parser.GetDataFromColumn("power", i), out int power);
+                int.TryParse(parser.GetDataFromColumn("pp", i), out int pp);
+                int.TryParse(parser.GetDataFromColumn("accuracy", i), out int accuracy);
                 list.Add(new MoveEntity(
                     id,
-                    _parser.GetDataFromColumn("identifier", i),
-                    types.ElementAt(int.Parse(_parser.GetDataFromColumn("type_id", i)) - 1),
+                    parser.GetDataFromColumn("identifier", i),
+                    types[int.Parse(parser.GetDataFromColumn("type_id", i)) - 1].Name,
                     power,
                     pp,
                     accuracy
