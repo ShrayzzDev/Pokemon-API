@@ -2,12 +2,10 @@
 using Entities.Pokemons;
 using EntityExtensions;
 using EntityExtensions.Pokemons;
-using Microsoft.VisualBasic;
 using Model;
 using Model.DamageParameters;
 using Model.Pokemons;
 using Services;
-using System;
 
 namespace Business
 {
@@ -42,11 +40,10 @@ namespace Business
         }
 
         /// <inheritdoc/>
-        /// Function is very long, should get seperated a bit.
         public async Task<(double, double)> GetDamage(Gen1DamageInformations informations)
         {
-            var damaging = (await _pkmnRepository.GetPokemonById(informations.DamagingId))?.ToModel();
-            var target = (await _pkmnRepository.GetPokemonById(informations.TargetId))?.ToModel();
+            var damaging = (await _pkmnRepository.GetPokemonWithoutMovesById(informations.DamagingId))?.ToModel();
+            var target = (await _pkmnRepository.GetPokemonWithoutMovesById(informations.TargetId))?.ToModel();
             if (damaging == null || target == null)
             {
                 throw new KeyNotFoundException("Either damaging or target pokemon could not be found");
@@ -73,7 +70,10 @@ namespace Business
             return (minResult, maxResult);
         }
 
-        protected (int, int) GetRealAttackDefenseStats(Move move, Pokemon damaging, Pokemon target, Gen1DamageInformations informations)
+        protected (int, int) GetRealAttackDefenseStats(Move move,
+                                                       PokemonWithoutMoves damaging,
+                                                       PokemonWithoutMoves target,
+                                                       Gen1DamageInformations informations)
         {
             int attack;
             int defense;
@@ -104,6 +104,7 @@ namespace Business
                         informations.DamagingLevel,
                         false
                     );
+
                     // We can do that since in gen1,
                     // they are the same stat.
                     defense = attack;
@@ -115,7 +116,7 @@ namespace Business
             return (attack, defense);
         }
 
-        private float GetSTAB(Pokemon damaging, Move move)
+        private float GetSTAB(PokemonWithoutMoves damaging, Move move)
         {
             float STAB = 1f;
             foreach (var type in damaging.Types)
@@ -125,7 +126,7 @@ namespace Business
             return STAB;
         }
 
-        private async Task<float> GetTypeEfficiency(Move move, Pokemon target)
+        private async Task<float> GetTypeEfficiency(Move move, PokemonWithoutMoves target)
         {
             IEnumerable<float> typeEffis = await _typeEfficiencyRepository.GetEfficiencyOn(
                 move.Type.Name, target.Types.Select(t => t.Name)
