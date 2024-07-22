@@ -20,5 +20,8 @@ namespace Business
 
         public async Task<IEnumerable<SimplePokemon>> GetPokemonByName(string name, int index, int count)
             => (await _repository.GetPokemonByName(name, index, count)).ToModels();
+
+        public async Task<PokemonWithoutMoves?> GetPokemonWithoutMovesById(int id)
+            => (await _repository.GetPokemonWithoutMovesById(id))?.ToModel();
     }
 }

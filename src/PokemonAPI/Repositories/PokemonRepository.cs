@@ -19,12 +19,11 @@ namespace Repositories
         public async Task<PokemonEntity?> GetPokemonById(int id)
         {
             return await Context.Pokemons
-                .Where(p => p.Id == id)
                 .Include(p => p.MovePool)
                 .ThenInclude(mp => mp.LearnedMove)
                 .ThenInclude(m => m.Type)
                 .Include(p => p.Types)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         /// <inheritdoc/>
@@ -34,6 +33,13 @@ namespace Repositories
                 .Where(p => p.Name.Contains(name))
                 .Skip(index * count)
                 .Take(count).ToListAsync();
+        }
+
+        public async Task<PokemonWithoutMovesEntity?> GetPokemonWithoutMovesById(int id)
+        {
+            return await Context.PokemonsWithoutMoves
+                .Include(pkmn => pkmn.Types)
+                .FirstOrDefaultAsync(pkmn => pkmn.Id.Equals(id));
         }
     }
 }
