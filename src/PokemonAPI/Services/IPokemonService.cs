@@ -12,6 +12,12 @@
         public Task<Detailed?> GetPokemonById(int id);
 
         /// <summary>
+        /// Returns a pokemon without including it's move list.
+        /// </summary>
+        /// <returns>A pokemon without moves</returns>
+        public Task<WithoutMoves?> GetPokemonWithoutMovesById(int id);
+
+        /// <summary>
         /// Returns a list a pokemon containing the
         /// string passed as parameter
         /// </summary>
