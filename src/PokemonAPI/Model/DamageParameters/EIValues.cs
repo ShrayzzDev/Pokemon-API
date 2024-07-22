@@ -43,7 +43,7 @@ namespace Model.DamageParameters
                 if (isIVs)
                     throw new ArgumentOutOfRangeException("IVs can not be over 31");
                 else
-                    throw new ArgumentOutOfRangeException("EVs can not be over 255");
+                    throw new ArgumentOutOfRangeException("EVs have an invalid value");
             }
         }
 
