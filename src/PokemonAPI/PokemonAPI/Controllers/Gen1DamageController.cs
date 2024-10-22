@@ -1,6 +1,7 @@
 ﻿using DTO;
 using DTO.DamageParameters;
 using DTOExtensions.DamageParameters;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.DamageParameters;
 using Services;
@@ -9,6 +10,7 @@ namespace PokemonAPI.Controllers
 {
     [ApiController]
     [Route("damage/gen1")]
+    [EnableCors("AllowSpecificOrigins")]
     public class Gen1DamageController : Controller
     {
         private ILogger<Gen1DamageController> _logger;
@@ -23,6 +25,7 @@ namespace PokemonAPI.Controllers
         }
 
         [HttpPost]
+        [EnableCors("AllowSpecificOrigins")]
         public async Task<IActionResult> CalculateDamage([FromBody] Gen1DamageInformationsDTO parameters)
         {
             _logger.LogInformation($"{DateTime.Now} | An user is trying to calculate damages");

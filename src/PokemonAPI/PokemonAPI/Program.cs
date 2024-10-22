@@ -32,6 +32,20 @@ builder.Services.AddScoped<IDamageCalculator<Gen1DamageInformations>, Gen1Damage
 
 builder.Services.AddDbContext<PokemonDBContext>();
 
+var AllowSpecificOrigins = "AllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowSpecificOrigins,
+            policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            }
+        );
+});
+
 using (var context = new PokemonDBContext())
 {
     if (!context.Pokemons.Any())
@@ -59,6 +73,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors(AllowSpecificOrigins);
 
 app.MapControllers();
 

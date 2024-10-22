@@ -5,6 +5,7 @@ using DTOExtensions;
 using DTOExtensions.Pokemons;
 using Entities;
 using EntityExtensions.Pokemons;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using Model.Pokemons;
@@ -14,6 +15,7 @@ namespace PokemonAPI.Controllers
 {
     [ApiController]
     [Route("pokemon")]
+    [EnableCors("AllowSpecificOrigins")]
     public class PokemonController : Controller
     {
         private readonly IPokemonService<Pokemon, PokemonWithoutMoves, SimplePokemon> _pokemonService;
@@ -36,6 +38,7 @@ namespace PokemonAPI.Controllers
         [Route("{id}")]
         [ProducesResponseType(typeof(PokemonDTO), 200)]
         [ProducesResponseType(404)]
+        [EnableCors("AllowSpecificOrigins")]
         public async Task<IActionResult> GetPokemonById(int id)
         {
             _logger.LogInformation($"{DateTime.Now} | An user is trying to retrieve the n°{id} pokemon");
@@ -62,6 +65,7 @@ namespace PokemonAPI.Controllers
 
         [HttpGet]
         [Route("{name}/{index}/{count}")]
+        [EnableCors("AllowSpecificOrigins")]
         public async Task<IActionResult> GetPokemonByName(string name, int index, int count)
         {
             _logger.LogInformation($"{DateTime.Now} | An user is trying to retrieve the {name} pokemon");
@@ -88,6 +92,7 @@ namespace PokemonAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Moves/{generation}g/{level}")]
+        [EnableCors("AllowSpecificOrigins")]
         public async Task<IActionResult> GetMovesForPokemon(int id, ushort level, ushort generation)
         {
             _logger.LogInformation($"{DateTime.Now} | An user is trying to retrive the move pool of pokemon {id} at level {level}");

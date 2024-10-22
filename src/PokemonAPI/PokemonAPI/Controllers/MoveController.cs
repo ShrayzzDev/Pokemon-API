@@ -1,5 +1,6 @@
 ﻿using DTO;
 using DTOExtensions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
@@ -9,6 +10,7 @@ namespace PokemonAPI.Controllers
 {
     [ApiController]
     [Route("move")]
+    [EnableCors("AllowSpecificOrigins")]
     public class MoveController : Controller
     {
 
@@ -26,6 +28,7 @@ namespace PokemonAPI.Controllers
 
         [HttpGet]
         [Route("{id}/")]
+        [EnableCors("AllowSpecificOrigins")]
         public async Task<IActionResult> GetMoveById(int id)
         {
             _logger.LogInformation($"{DateTime.Now} | An user is trying to retrive the move of id {id}");
@@ -52,6 +55,7 @@ namespace PokemonAPI.Controllers
 
         [HttpGet]
         [Route("{pokId}/learns/{moveId}")]
+        [EnableCors("AllowSpecificOrigins")]
         public async Task<IActionResult> WhichLevelPokemonLearns(int pokId, int moveId)
         {
             _logger.LogInformation($"{DateTime.Now} | An user is trying to retrive the level the pokemon of id {pokId} learns the move of id {moveId}");
@@ -78,6 +82,7 @@ namespace PokemonAPI.Controllers
 
         [HttpGet]
         [Route("{moveName}/{index}/{count}")]
+        [EnableCors("AllowSpecificOrigins")]
         public async Task<IActionResult> GetMovesByName(string moveName, int index, int count)
         {
             _logger.LogInformation($"{DateTime.Now} | An user is trying to retrive the move named {moveName}");
