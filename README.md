@@ -17,6 +17,7 @@ Get | /move/{name}/{index}/{count} | Returns a list of moves whose name contains
 Post | /damage/gen{generation} | Returns the amount of damage delt following informations given in the body | Gen{Generation}DamageInformationDTO | Integer
 
 If you need more informations about these routes, a Swagger doc will be deployed at the same time the API will.
+Note that for the moment, the API is not deployed.
 
 ## Limitations
 
