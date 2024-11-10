@@ -2,6 +2,8 @@
 
 Web API created using ASP.NET Core and Entity Framework in C#.  
 
+Data used comes from [this repo](https://github.com/veekun/pokedex)
+
 ## Routes
 
 The following routes are implemented :
