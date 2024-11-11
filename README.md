@@ -18,8 +18,8 @@ Get | /move/{pokId}/learns/{moveId} | Returns the level a which given pokemon le
 Get | /move/{name}/{index}/{count} | Returns a list of moves whose name contains the "name" parameter | Nothing | List of Moves
 Post | /damage/gen{generation} | Returns the amount of damage delt following informations given in the body | Gen{Generation}DamageInformationDTO | Integer
 
-If you need more informations about these routes, a Swagger doc will be deployed at the same time the API will.
-Note that for the moment, the API is not deployed.
+If you need more informations about these routes, a Swagger doc will soon be deployed.  
+You can use the API here : [http://shrayzz.fr:5242/](http://shrayzz.fr:5242/)
 
 ## Limitations
 
